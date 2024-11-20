@@ -91,12 +91,19 @@ public class OrderServiceImpl implements OrderService {
     @Transient
     public void processOrder(String message) throws JsonProcessingException {
         Order orderJson = new ObjectMapper().readValue(message, Order.class);
-        Order orderEntity = orderRepository.findById(orderJson.getId()).orElse(orderJson);
+        Optional<Order> optionalOrder = orderRepository.findById(orderJson.getId());
 
-        orderEntity.setStatus(OrderStatus.COMPLETED.name());
-        orderEntity.setCauseStatusDescription(ConstantsMessages.SUCCESSFUL_ORDER);
-        itemRepository.saveAll(orderEntity.getItems());
-        orderRepository.save(orderEntity);
+        if(optionalOrder.isPresent()) {
+            log.info("Invalid order: {} the order already there is", orderJson.getId());
+        }else{
+            log.info("Ordem Validada enviado para persistencia no BD...");
+            Order orderEntity = new ObjectMapper().readValue(message, Order.class);
+            orderEntity.setStatus(OrderStatus.COMPLETED.name());
+            orderEntity.setCauseStatusDescription(ConstantsMessages.SUCCESSFUL_ORDER);
+            itemRepository.saveAll(orderEntity.getItems());
+            orderRepository.save(orderEntity);
+        }
+
     }
 
     private Order buildOrder(Order order, OrderStatus orderStatus, String causeStatusDescription, List<Product> products) {

@@ -1,8 +1,11 @@
 package com.ambev.aws.sqs;
 
 
+import com.ambev.core.model.Order;
+import com.ambev.core.repository.OrderRepository;
 import com.ambev.core.service.OrderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +27,6 @@ public class OrderQueueListener {
 
     @Autowired
     private OrderService orderService;
-
 
     public OrderQueueListener(@Value("${aws.sqs.queue-url}") String queueUrl) {
 
@@ -55,8 +57,7 @@ public class OrderQueueListener {
 
         for (Message message : response.messages()) {
             log.info("Mensagem recebida: " + message.body());
-            if(orderService.validateOrder(message.body())){
-                log.info("Ordem Validada enviado para persistencia no BD...");
+           if(orderService.validateOrder(message.body())){
                 orderService.processOrder(message.body());
             }
             deleteMessage(message.receiptHandle());

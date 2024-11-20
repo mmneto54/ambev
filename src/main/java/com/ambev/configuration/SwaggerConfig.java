@@ -11,7 +11,7 @@ public class SwaggerConfig {
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
                 .group("public-api") // Nome do grupo
-                .packagesToScan("com.ambev.core.controller") // Pacote onde estão os controladores
+                .packagesToScan("com.ambev") // Pacote onde estão os controladores
                 .build();
     }
 }

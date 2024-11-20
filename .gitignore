@@ -1,0 +1,12 @@
+# macOS system files
+.DS_Store
+
+# IDE specific files
+.idea/
+
+# .DS_Store files in specific directories
+src/.DS_Store
+src/main/.DS_Store
+
+# Build output directory
+target/
