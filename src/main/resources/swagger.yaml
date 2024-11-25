@@ -1,0 +1,313 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  "/api/products/{id}":
+    get:
+      tags:
+        - product-controller
+      summary: Busca Produto por Id
+      description: Este endpoint busca produto por id.
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Produto Encontrado
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Product"
+        '404':
+          description: Nenhum Produto Encontrado
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Product"
+    put:
+      tags:
+        - product-controller
+      operationId: updateProduct
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Product"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Product"
+  "/api/sqs/send":
+    post:
+      tags:
+        - sqs-controller
+      operationId: sendMessage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: string
+  "/api/products":
+    get:
+      tags:
+        - product-controller
+      operationId: getAllProducts
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            "$ref": "#/components/schemas/Pageable"
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/PageProduct"
+    post:
+      tags:
+        - product-controller
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Product"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Product"
+  "/api/orders":
+    get:
+      tags:
+        - order-controller
+      operationId: getAllOrders
+      parameters:
+        - name: pageable
+          in: query
+          required: true
+          schema:
+            "$ref": "#/components/schemas/Pageable"
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/PageOrder"
+  "/api/orders/{id}":
+    get:
+      tags:
+        - order-controller
+      operationId: getOrdeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/Order"
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+        description:
+          type: string
+        quantityAvailable:
+          type: integer
+          format: int32
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+    PageProduct:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Product"
+        number:
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SortObject"
+        pageable:
+          "$ref": "#/components/schemas/PageableObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
+    PageableObject:
+      type: object
+      properties:
+        offset:
+          type: integer
+          format: int64
+        sort:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SortObject"
+        paged:
+          type: boolean
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        unpaged:
+          type: boolean
+    SortObject:
+      type: object
+      properties:
+        direction:
+          type: string
+        nullHandling:
+          type: string
+        ascending:
+          type: boolean
+        property:
+          type: string
+        ignoreCase:
+          type: boolean
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        productId:
+          type: string
+        price:
+          type: number
+          format: double
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        customerCpf:
+          type: string
+        orderDate:
+          type: string
+          format: date-time
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Item"
+        totalAmount:
+          type: number
+          format: double
+        status:
+          type: string
+        causeStatusDescription:
+          type: string
+    PageOrder:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Order"
+        number:
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SortObject"
+        pageable:
+          "$ref": "#/components/schemas/PageableObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
