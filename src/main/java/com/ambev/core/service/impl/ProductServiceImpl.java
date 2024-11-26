@@ -47,6 +47,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Boolean deleteProduct(String id)  {
+        if(repository.findById(id).isPresent()){
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void decreaseQuantity(String id, Integer quantity) {
         Product product = this.getProductById(id).orElse(null);
         if(product != null) {
