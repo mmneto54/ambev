@@ -26,7 +26,7 @@ public class ProductServiceImpl implements ProductService {
     public Optional<Product> getProductById(String id) {
         return repository.findById(id);
     }
-
+    //teste usuario github
     @Override
     public Product createProduct(Product product) {
         if (product.getId() == null || product.getId().isEmpty()) {
