@@ -87,5 +87,4 @@ public class Order {
     public void setCauseStatusDescription(String causeStatusDescription) {
         this.causeStatusDescription = causeStatusDescription;
     }
-
 }
