@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
             existingProduct.setName(product.getName());
             existingProduct.setPrice(product.getPrice());
             existingProduct.setDescription(product.getDescription());
-            existingProduct.setQuantityAvailable(product.getQuantityAvailable());
+            existingProduct.notifyAll(product.getQuantityAvailable());
             return repository.save(existingProduct);
         }).orElseThrow(() -> new RuntimeException("Product not found"));
     }

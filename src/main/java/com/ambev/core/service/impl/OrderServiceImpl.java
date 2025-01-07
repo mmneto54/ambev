@@ -134,5 +134,4 @@ public class OrderServiceImpl implements OrderService {
     private boolean shouldCalculateAmount(List<Product> products, List<Item> items){
         return products == null || items == null || items.isEmpty() || products.isEmpty();
     }
-
 }
