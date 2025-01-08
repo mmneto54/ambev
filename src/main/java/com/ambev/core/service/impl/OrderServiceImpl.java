@@ -107,7 +107,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private Order buildOrder(Order order, OrderStatus orderStatus, String causeStatusDescription, List<Product> products) {
-        return Order.builder()
+
+        return   Order.builder()
                 .orderDate(new Date())
                 .customerCpf(order.getCustomerCpf())
                 .id(order.getId())

@@ -1,18 +1,21 @@
 package com.ambev.core.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 
 
-@Table(name = "orders")
+@Entity
 @Data
 @Builder
-@Jacksonized
+@NoArgsConstructor  // No-arg constructor for JPA
+@AllArgsConstructor // All-arg constructor for @Builder
+@Table(name = "orders")
 public class Order {
 
     @Id
@@ -23,7 +26,7 @@ public class Order {
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order")
     private List<Item> items;
 
     private Double totalAmount;
@@ -32,59 +35,4 @@ public class Order {
 
     private String causeStatusDescription;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getCustomerCpf() {
-        return customerCpf;
-    }
-
-    public void setCustomerCpf(String customerCpf) {
-        this.customerCpf = customerCpf;
-    }
-
-    public Date getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
-    public Double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getCauseStatusDescription() {
-        return causeStatusDescription;
-    }
-
-    public void setCauseStatusDescription(String causeStatusDescription) {
-        this.causeStatusDescription = causeStatusDescription;
-    }
 }
