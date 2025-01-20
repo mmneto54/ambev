@@ -1,6 +1,5 @@
 package com.ambev.core.model;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
@@ -60,7 +59,8 @@ public class Product {
     }
 
     public void setQuantityAvailable(Integer quantityAvailable) {
-        this.quantityAvailable = quantityAvailable;
     }
 
+    public void notifyAll(Integer quantityAvailable) {
+    }
 }
