@@ -1,17 +1,21 @@
 package com.ambev.core.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
-import org.springframework.data.annotation.Id;
+import lombok.NoArgsConstructor;
 
 
-@Table(name = "items")
 @Data
-@Jacksonized
+@Builder
+@NoArgsConstructor  // No-arg constructor for JPA
+@AllArgsConstructor // All-arg constructor for @Builder
+@Entity
+@Table(name = "items")
 public class Item {
 
     @Id
@@ -23,35 +27,7 @@ public class Item {
 
     private Double price;
 
-    public String getId() {
-        return id;
-    }
+    @ManyToOne // This is the "many" side of the relationship
+    private Order order;
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
 }
